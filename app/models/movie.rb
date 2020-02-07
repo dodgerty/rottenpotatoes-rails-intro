@@ -2,7 +2,7 @@ class Movie < ActiveRecord::Base
     
     @ratings = ['G', 'PG', 'PG-13', 'R']
     
-    def self.ratings
+    def self.all_ratings
         return @ratings
     end
     
