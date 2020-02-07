@@ -13,7 +13,6 @@ class MoviesController < ApplicationController
   def index
     
     #######Part 1############
-    session.clear
     
     if params[:sort_by].nil?
       if session[:sort_by].nil?
