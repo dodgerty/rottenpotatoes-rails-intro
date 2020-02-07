@@ -13,20 +13,46 @@ class MoviesController < ApplicationController
   def index
     
     #######Part 1############
-    session.clear
+    # session.clear
     
-    if params[:sort_by].nil?
-      if session[:sort_by].nil?
-        
-      else
-        sort_by = session[:sort_by]
-        #flash.keep
-        #redirect_to movies_path(session) and return
-      end
-    else
+    
+    @all_ratings = Movie.all_ratings
+    @filtered_ratings = @all_ratings
+    
+    if !params[:sort_by].nil?
       sort_by = params[:sort_by]
       session[:sort_by] = params[:sort_by]
     end
+    if !params[:ratings].nil?
+      @filtered_ratings = params[:ratings].keys
+      session[:ratings] = params[:ratings]
+    end
+    
+    if !session[:sort_by].nil? && params[:sort_by].nil? || !session[:ratings].nil? && params[:ratings].nil?
+      new_hash = {}
+      new_hash[:sort_by] = session[:sort_by]
+      new_hash[:ratings] = session[:ratings]
+      redirect_to movies_path(new_hash)
+      # sort_by = session[:sort_by]
+    end
+    # if !session[:ratings].nil? && params[:ratings].nil?
+    #   @filtered_ratings = session[:ratings].keys
+    # end
+    
+    #redirect_to movies_path(session)
+    
+    # if params[:sort_by].nil?
+    #   if session[:sort_by].nil?
+        
+    #   else
+    #     sort_by = session[:sort_by]
+    #     #flash.keep
+    #     redirect_to movies_path(session)
+    #   end
+    # else
+    #   sort_by = params[:sort_by]
+    #   session[:sort_by] = params[:sort_by]
+    # end
     
     if sort_by == "title"
       @hilite = "title"
@@ -39,19 +65,18 @@ class MoviesController < ApplicationController
     
     ######Part 2##########
    
-   @all_ratings = Movie.all_ratings
    
-   if params[:ratings].nil?
-     if session[:ratings].nil?
-       @filtered_ratings = @all_ratings
-     else
-       @filtered_ratings = session[:ratings].keys
-       #redirect_to movies_path(session) and return
-     end
-   else
-     @filtered_ratings = params[:ratings].keys
-     session[:ratings] = params[:ratings]
-   end
+  # if params[:ratings].nil?
+  #   if session[:ratings].nil?
+  #     @filtered_ratings = @all_ratings
+  #   else
+  #     @filtered_ratings = session[:ratings].keys
+  #     redirect_to movies_path(session)
+  #   end
+  # else
+  #   @filtered_ratings = params[:ratings].keys
+  #   session[:ratings] = params[:ratings]
+  # end
 	 
 	 @movies = Movie.order(sort_by).where(rating: @filtered_ratings)
 	 
