@@ -13,12 +13,15 @@ class MoviesController < ApplicationController
   def index
     
     #######Part 1############
+    session.clear
     
     if params[:sort_by].nil?
       if session[:sort_by].nil?
         
       else
         sort_by = session[:sort_by]
+        #flash.keep
+        #redirect_to movies_path(session) and return
       end
     else
       sort_by = params[:sort_by]
@@ -43,6 +46,7 @@ class MoviesController < ApplicationController
        @filtered_ratings = @all_ratings
      else
        @filtered_ratings = session[:ratings].keys
+       #redirect_to movies_path(session) and return
      end
    else
      @filtered_ratings = params[:ratings].keys
