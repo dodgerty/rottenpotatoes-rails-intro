@@ -12,9 +12,19 @@ class MoviesController < ApplicationController
 
   def index
     
-    #######Part 1#############
-
-    sort_by = params[:sort_by]
+    #######Part 1############
+    
+    if params[:sort_by].nil?
+      if session[:sort_by].nil?
+        
+      else
+        sort_by = session[:sort_by]
+      end
+    else
+      sort_by = params[:sort_by]
+      session[:sort_by] = params[:sort_by]
+    end
+    
     if sort_by == "title"
       @hilite = "title"
     end
@@ -28,12 +38,24 @@ class MoviesController < ApplicationController
    
    @all_ratings = Movie.all_ratings
    
-	 @filtered_ratings = (params[:ratings].keys if params.key?(:ratings)) || @all_ratings
+   if params[:ratings].nil?
+     if session[:ratings].nil?
+       @filtered_ratings = @all_ratings
+     else
+       @filtered_ratings = session[:ratings].keys
+     end
+   else
+     @filtered_ratings = params[:ratings].keys
+     session[:ratings] = params[:ratings]
+   end
 	 
 	 @movies = Movie.order(sort_by).where(rating: @filtered_ratings)
+	 
   
-    
     ######End Part 2##########
+    
+    ########Part 3##############
+    
     
   end
 
