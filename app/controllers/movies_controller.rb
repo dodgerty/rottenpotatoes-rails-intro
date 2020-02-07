@@ -35,24 +35,7 @@ class MoviesController < ApplicationController
       redirect_to movies_path(new_hash)
       # sort_by = session[:sort_by]
     end
-    # if !session[:ratings].nil? && params[:ratings].nil?
-    #   @filtered_ratings = session[:ratings].keys
-    # end
     
-    #redirect_to movies_path(session)
-    
-    # if params[:sort_by].nil?
-    #   if session[:sort_by].nil?
-        
-    #   else
-    #     sort_by = session[:sort_by]
-    #     #flash.keep
-    #     redirect_to movies_path(session)
-    #   end
-    # else
-    #   sort_by = params[:sort_by]
-    #   session[:sort_by] = params[:sort_by]
-    # end
     
     if sort_by == "title"
       @hilite = "title"
@@ -64,19 +47,6 @@ class MoviesController < ApplicationController
     ######End Part 1##########
     
     ######Part 2##########
-   
-   
-  # if params[:ratings].nil?
-  #   if session[:ratings].nil?
-  #     @filtered_ratings = @all_ratings
-  #   else
-  #     @filtered_ratings = session[:ratings].keys
-  #     redirect_to movies_path(session)
-  #   end
-  # else
-  #   @filtered_ratings = params[:ratings].keys
-  #   session[:ratings] = params[:ratings]
-  # end
 	 
 	 @movies = Movie.order(sort_by).where(rating: @filtered_ratings)
 	 
